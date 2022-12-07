@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
-import { useState } from 'react'
+import { useFormik } from 'formik'
 
 const beforeStartupQuestions = [
     {
@@ -49,27 +49,62 @@ const afterStartupQuestions = [
 ]
 
 export default function Checklist() {
+
+    //TODO: extract to a function
     let formInitialValues = {}
-    beforeStartupQuestions.map( questionObject => formInitialValues[questionObject.question] = "")
+    beforeStartupQuestions.map( questionObject => formInitialValues[questionObject.question] = "");
+    formInitialValues["notes"] = "";
+    const formik = useFormik({
+        initialValues: formInitialValues,
+          //TODO: change onSubmit to post data to backend
+        onSubmit: (values) => {
+            console.log(values);
+        }
+    })
 
   return (
     <div>
-        <form>
+        <form onSubmit={formik.handleSubmit}>
             {
-                beforeStartupQuestions.map(quesstion =>             
-                <div key={quesstion.number}>
-                    {/* <div> */}
-                    <h5>{quesstion.number}. {quesstion.question}</h5>
-                    <input type='radio' id={`damaged${quesstion.number}`} name={quesstion.question} value='damaged'/> <label htmlFor={`damaged${quesstion.number}`}> Damaged</label>
-                    <input type='radio' id={`not-damaged${quesstion.number}`} name={quesstion.question} value='not damaged'/> <label htmlFor={`not-damaged${quesstion.number}`}>Not damaged</label>
-                    {/* </div> */}
-                </div>)
+                beforeStartupQuestions.map( qstn => 
+                    <div key={qstn.number}>
+                        <h5>{qstn.number}. {qstn.question}</h5>
+                        <input 
+                            type='radio' 
+                            id={`damaged${qstn.number}`} 
+                            name={qstn.question}
+                            value='damaged'
+                            onChange={formik.handleChange}
+                        />
+                        <label htmlFor={`damaged${qstn.number}`}>
+                            Damaged
+                        </label>
+                        <input 
+                            type='radio' 
+                            id={`not-damaged${qstn.number}`} 
+                            name={qstn.question}
+                            value='not-damaged'
+                            onChange={formik.handleChange}
+                        />
+                        <label htmlFor={`not-damaged${qstn.number}`}>
+                            Not Damaged
+                        </label>
+                    </div>
+                )
             }
             <div>
-                <label htmlFor='notes'>Notes</label>
-                <textarea cols='10' name='notes' id='notes'></textarea>
+            <label htmlFor='notes'>Notes</label>
+                <textarea 
+                    cols='10' 
+                    name='notes' 
+                    id='notes' 
+                    onChange={formik.handleChange}
+                >
+                </textarea>
             </div>
+            <Button type="submit">Submit</Button>
         </form>
+        <h1>{}</h1>
     </div>
   )
 }
