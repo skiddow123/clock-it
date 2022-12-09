@@ -1,6 +1,7 @@
 import React from 'react'
-import Button from 'react-bootstrap/Button'
-import { useFormik } from 'formik'
+import { TextField, Button, FormControl, FormControlLabel, RadioGroup, Radio, FormLabel, FormHelperText } from '@mui/material'
+import { Form, Field, Formik, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
 
 const beforeStartupQuestions = [
     {
@@ -52,59 +53,70 @@ export default function Checklist() {
 
     //TODO: extract to a function
     let formInitialValues = {}
-    beforeStartupQuestions.map( questionObject => formInitialValues[questionObject.question] = "");
-    formInitialValues["notes"] = "";
-    const formik = useFormik({
-        initialValues: formInitialValues,
-          //TODO: change onSubmit to post data to backend
-        onSubmit: (values) => {
-            console.log(values);
-        }
-    })
 
-  return (
-    <div>
-        <form onSubmit={formik.handleSubmit}>
-            {
-                beforeStartupQuestions.map( qstn => 
-                    <div key={qstn.number}>
-                        <h5>{qstn.number}. {qstn.question}</h5>
-                        <input 
-                            type='radio' 
-                            id={`damaged${qstn.number}`} 
-                            name={qstn.question}
-                            value='damaged'
-                            onChange={formik.handleChange}
-                        />
-                        <label htmlFor={`damaged${qstn.number}`}>
-                            Damaged
-                        </label>
-                        <input 
-                            type='radio' 
-                            id={`not-damaged${qstn.number}`} 
-                            name={qstn.question}
-                            value='not-damaged'
-                            onChange={formik.handleChange}
-                        />
-                        <label htmlFor={`not-damaged${qstn.number}`}>
-                            Not Damaged
-                        </label>
-                    </div>
-                )
-            }
-            <div>
-            <label htmlFor='notes'>Notes</label>
-                <textarea 
-                    cols='10' 
-                    name='notes' 
-                    id='notes' 
-                    onChange={formik.handleChange}
-                >
-                </textarea>
-            </div>
-            <Button type="submit">Submit</Button>
-        </form>
-        <h1>{}</h1>
-    </div>
-  )
+    formInitialValues["firstname"] = ""
+    formInitialValues["lastname"] = ""
+    beforeStartupQuestions.map(questionObject => formInitialValues[questionObject.question] = "")
+    formInitialValues["notes"] = ""
+
+
+
+    //TODO: extract to a function
+    let formValidationSchemaYupObject = {}
+    beforeStartupQuestions.map(questionObject => formValidationSchemaYupObject[questionObject.question] = Yup.string().oneOf(["damaged", "not-damaged"], "required").required(`Question ${questionObject.number} must be answered`))
+    formValidationSchemaYupObject["firstname"] = Yup.string().required("firstname is required")
+    formValidationSchemaYupObject["lastname"] = Yup.string().required("lastname is required"); 
+    formValidationSchemaYupObject["notes"] = Yup.string().required("Notes is required");  //TODO: check if notes is required
+    console.log(formValidationSchemaYupObject);
+
+
+    const formValidationSchema = Yup.object().shape(formValidationSchemaYupObject)
+
+    return (
+        <div>
+            <Formik initialValues={formInitialValues} onSubmit={(values, props) => {
+                console.log(values);
+            }} 
+            validationSchema={formValidationSchema}
+            >
+                {
+                    ({ props }) =>
+                        <Form>
+
+                            {
+                                beforeStartupQuestions.map(qstn =>
+                                    <div key={qstn.number}>
+                                        <FormControl>
+                                            <FormLabel id="demo-radio-buttons-group-label">{`${qstn.number}. ${qstn.question}`}</FormLabel>
+                                            <Field as={RadioGroup}
+                                                aria-labelledby="demo-radio-buttons-group-label"
+                                                name={qstn.question}
+                                                style={{ 'display': 'initial' }}
+                                            >
+                                                <FormControlLabel value="damaged" control={<Radio />} label='Damaged' />
+                                                <FormControlLabel value="not-damaged" control={<Radio />} label="Not Damaged" />
+                                            </Field>
+                                        </FormControl>
+                                        <FormHelperText><ErrorMessage name={qstn.question}/></FormHelperText>
+                                    </div>
+                                )
+                            }
+                            <div>
+                                <Field as={TextField} multiline={true} rows='3' name='notes' label='notes' helperText={<ErrorMessage name='notes'/>}></Field>
+                            </div>
+                            <div>
+                                <Field as={TextField} name='firstname' label='Firstname' helperText={<ErrorMessage name='firstname'/>}></Field>
+                            </div>
+                            <div>
+                                <Field as={TextField} name='lastname' label='Lastname' helperText={<ErrorMessage name='lastname'/>}></Field>
+                            </div>
+                            <div>
+                                <Button type='submit' variant='contained' color='primary'>Clock In</Button>
+                            </div>
+                        </Form>
+                }
+            </Formik>
+
+        </div>
+    )
 }
