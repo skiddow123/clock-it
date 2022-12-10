@@ -49,24 +49,34 @@ const afterStartupQuestions = [
     }
 ]
 
-export default function Checklist() {
-
-    //TODO: extract to a function
+const constructFormInitialValues = (questions) => {
     let formInitialValues = {}
 
     formInitialValues["firstname"] = ""
     formInitialValues["lastname"] = ""
-    beforeStartupQuestions.map(questionObject => formInitialValues[questionObject.question] = "")
+    questions.map(questionObject => formInitialValues[questionObject.question] = "")
     formInitialValues["notes"] = ""
+    return formInitialValues;
+}
 
+const constructFormValidationSchema = (questions) => {
+    let formValidationSchemaYupObject = {}
+
+    questions.map(questionObject => formValidationSchemaYupObject[questionObject.question] = Yup.string().oneOf(["damaged", "not-damaged"], "required").required(`Question ${questionObject.number} must be answered`))
+    formValidationSchemaYupObject["firstname"] = Yup.string().required("firstname is required")
+    formValidationSchemaYupObject["lastname"] = Yup.string().required("lastname is required");
+    formValidationSchemaYupObject["notes"] = Yup.string().required("Notes is required");  //TODO: check if notes is required
+    return formValidationSchemaYupObject;
+}
+
+export default function Checklist() {
+
+    //TODO: extract to a function
+    let formInitialValues = constructFormInitialValues(beforeStartupQuestions);
 
 
     //TODO: extract to a function
-    let formValidationSchemaYupObject = {}
-    beforeStartupQuestions.map(questionObject => formValidationSchemaYupObject[questionObject.question] = Yup.string().oneOf(["damaged", "not-damaged"], "required").required(`Question ${questionObject.number} must be answered`))
-    formValidationSchemaYupObject["firstname"] = Yup.string().required("firstname is required")
-    formValidationSchemaYupObject["lastname"] = Yup.string().required("lastname is required"); 
-    formValidationSchemaYupObject["notes"] = Yup.string().required("Notes is required");  //TODO: check if notes is required
+    let formValidationSchemaYupObject = constructFormValidationSchema(beforeStartupQuestions);
     console.log(formValidationSchemaYupObject);
 
 
