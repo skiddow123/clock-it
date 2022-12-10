@@ -3,52 +3,6 @@ import { TextField, Button, FormControl, FormControlLabel, RadioGroup, Radio, Fo
 import { Form, Field, Formik, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 
-const beforeStartupQuestions = [
-    {
-        "number": 1,
-        "question": "are you mad1"
-    },
-    {
-        "number": 2,
-        "question": "are you mad2"
-    },
-    {
-        "number": 3,
-        "question": "are you mad3"
-    },
-    {
-        "number": 4,
-        "question": "are you mad4"
-    },
-    {
-        "number": 5,
-        "question": "are you mad5"
-    }
-]
-
-const afterStartupQuestions = [
-    {
-        "number": 1,
-        "question": "are you sane"
-    },
-    {
-        "number": 2,
-        "question": "are you sane"
-    },
-    {
-        "number": 3,
-        "question": "are you sane"
-    },
-    {
-        "number": 4,
-        "question": "are you sane"
-    },
-    {
-        "number": 5,
-        "question": "are you sane"
-    }
-]
-
 const constructFormInitialValues = (questions) => {
     let formInitialValues = {}
 
@@ -69,14 +23,10 @@ const constructFormValidationSchemaYupObject = (questions) => {
     return formValidationSchemaYupObject;
 }
 
-export default function Checklist() {
+export default function CheckList({questions}) {
+    const formInitialValues = constructFormInitialValues(questions);
+    const formValidationSchemaYupObject = constructFormValidationSchemaYupObject(questions);
 
-    //TODO: extract to a function
-    let formInitialValues = constructFormInitialValues(beforeStartupQuestions);
-
-
-    //TODO: extract to a function
-    let formValidationSchemaYupObject = constructFormValidationSchemaYupObject(beforeStartupQuestions);
     console.log(formValidationSchemaYupObject);
 
 
@@ -92,9 +42,8 @@ export default function Checklist() {
                 {
                     ({ props }) =>
                         <Form>
-
                             {
-                                beforeStartupQuestions.map(qstn =>
+                                questions.map(qstn =>
                                     <div key={qstn.number}>
                                         <FormControl>
                                             <FormLabel id="demo-radio-buttons-group-label">{`${qstn.number}. ${qstn.question}`}</FormLabel>
