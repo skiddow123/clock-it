@@ -23,7 +23,7 @@ const constructFormValidationSchemaYupObject = (questions) => {
     return formValidationSchemaYupObject;
 }
 
-export default function CheckList({questions}) {
+export default function CheckList({ questions }) {
     const formInitialValues = constructFormInitialValues(questions);
     const formValidationSchemaYupObject = constructFormValidationSchemaYupObject(questions);
 
@@ -36,12 +36,18 @@ export default function CheckList({questions}) {
         <div>
             <Formik initialValues={formInitialValues} onSubmit={(values, props) => {
                 console.log(values);
-            }} 
-            validationSchema={formValidationSchema}
+            }}
+                validationSchema={formValidationSchema}
             >
                 {
                     ({ props }) =>
                         <Form>
+                            <div>
+                                <Field as={TextField} name='firstname' label='Firstname' helperText={<ErrorMessage name='firstname' />}></Field>
+                            </div>
+                            <div>
+                                <Field as={TextField} name='lastname' label='Lastname' helperText={<ErrorMessage name='lastname' />}></Field>
+                            </div>
                             {
                                 questions.map(qstn =>
                                     <div key={qstn.number}>
@@ -56,18 +62,12 @@ export default function CheckList({questions}) {
                                                 <FormControlLabel value="not-damaged" control={<Radio />} label="Not Damaged" />
                                             </Field>
                                         </FormControl>
-                                        <FormHelperText><ErrorMessage name={qstn.question}/></FormHelperText>
+                                        <FormHelperText><ErrorMessage name={qstn.question} /></FormHelperText>
                                     </div>
                                 )
                             }
                             <div>
-                                <Field as={TextField} multiline={true} rows='3' name='notes' label='notes' helperText={<ErrorMessage name='notes'/>}></Field>
-                            </div>
-                            <div>
-                                <Field as={TextField} name='firstname' label='Firstname' helperText={<ErrorMessage name='firstname'/>}></Field>
-                            </div>
-                            <div>
-                                <Field as={TextField} name='lastname' label='Lastname' helperText={<ErrorMessage name='lastname'/>}></Field>
+                                <Field as={TextField} multiline={true} rows='3' name='notes' label='notes' helperText={<ErrorMessage name='notes' />}></Field>
                             </div>
                             <div>
                                 <Button type='submit' variant='contained' color='primary'>Clock In</Button>
