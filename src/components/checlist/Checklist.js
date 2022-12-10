@@ -59,7 +59,7 @@ const constructFormInitialValues = (questions) => {
     return formInitialValues;
 }
 
-const constructFormValidationSchema = (questions) => {
+const constructFormValidationSchemaYupObject = (questions) => {
     let formValidationSchemaYupObject = {}
 
     questions.map(questionObject => formValidationSchemaYupObject[questionObject.question] = Yup.string().oneOf(["damaged", "not-damaged"], "required").required(`Question ${questionObject.number} must be answered`))
@@ -76,7 +76,7 @@ export default function Checklist() {
 
 
     //TODO: extract to a function
-    let formValidationSchemaYupObject = constructFormValidationSchema(beforeStartupQuestions);
+    let formValidationSchemaYupObject = constructFormValidationSchemaYupObject(beforeStartupQuestions);
     console.log(formValidationSchemaYupObject);
 
 
