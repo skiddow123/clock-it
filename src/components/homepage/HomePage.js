@@ -1,10 +1,10 @@
 import React from 'react'
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import './HomePage.css';
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
+import './HomePage.css'
 import beforeStartupImg from '../../assets/Startup_Monochromatic1.png'
 import afterStartupImg from '../../assets/Startup_Isometric2.png'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 export default function HomePageComponent() {
   return (
