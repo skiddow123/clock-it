@@ -1,197 +1,245 @@
 export const beforeStartupParts = [
     {
         "number": 1,
-        "question": "DAMAGE ON THE MACHINE"
+        "label": "DAMAGE ON THE MACHINE",
+        "question": "damageOnMachine"
     },
     {
         "number": 2,
-        "question": "DIU CONDITION"
+        "label": "DIU CONDITION",
+        "question": "diuCondition"
     },
     {
         "number": 3,
-        "question": "DIESEL GENERATOR"
+        "label": "DIESEL GENERATOR",
+        "question": "dieselGeneration"
     },
     {
         "number": 4,
-        "question": "E-ROOM DOORS"
+        "label": "E-ROOM DOORS",
+        "question": "eRoomDoors"
     },
     {
         "number": 5,
-        "question": "GANTRY MOTORS"
+        "label": "GANTRY MOTORS",
+        "question": "gantryMotors"
     },
     {
         "number": 6,
-        "question": "ANTI COLLISION SENSORS"
+        "label": "ANTI COLLISION SENSORS",
+        "question": "antiCollisionSensors"
     },
     {
         "number": 7,
-        "question": "CAT WHISKERS"
+        "label": "CAT WHISKERS",
+        "question": "catWhiskers"
     },
     {
         "number": 8,
-        "question": "STEERING ROD"
+        "label": "STEERING ROD",
+        "question": "steeringRod"
     },
     {
         "number": 9,
-        "question": "CAMERA"
+        "label": "CAMERA",
+        "question": "camera"
     },
     {
         "number": 10,
-        "question": "GANTRY GEARBOX"
+        "label": "GANTRY GEARBOX",
+        "question": "gantryGearBox"
     },
     {
         "number": 11,
-        "question": "WHEEL GUARDS"
+        "label": "WHEEL GUARDS",
+        "question": "wheelGuards"
     },
     {
         "number": 12,
-        "question": "ACCESS GATE SENSORS"
+        "label": "ACCESS GATE SENSORS",
+        "question": "accessGateSensors"
     },
     {
         "number": 13,
-        "question": "EARTHING SYSTEM"
+        "label": "EARTHING SYSTEM",
+        "question": "earthingSystem"
     },
     {
         "number": 14,
-        "question": "STAIRWAY/ MONKEY LADDER"
+        "label": "STAIRWAY/ MONKEY LADDER",
+        "question": "stairwayOrMonkeyLadder"
     },
     {
         "number": 15,
-        "question": "WALKWAY LIGHTS"
+        "label": "WALKWAY LIGHTS",
+        "question": "walkwayLights"
     },
     {
         "number": 16,
-        "question": "TYRE / RIM / HUB"
+        "label": "TYRE / RIM / HUB",
+        "question": "tyreOrRimOrHub"
     },
     {
         "number": 17,
-        "question": "ASHORE POWER CABLE"
+        "label": "ASHORE POWER CABLE",
+        "question": "ashorePowerCable"
     },
     {
         "number": 18,
-        "question": "CABIN GLASS STATUS"
+        "label": "CABIN GLASS STATUS",
+        "question": "cabinGlassStatus"
     }
 ]
 
 export const afterStartupParts = [
     {
         "number": 1,
-        "question": "TROLLEY GATE SENSORS"
+        "label": "TROLLEY GATE SENSORS",
+        "question": "trolleyGateSensors"
     },
     {
         "number": 2,
-        "question": "IS AIR CONDITION WORKING?"
+        "label": "IS AIR CONDITION WORKING",
+        "question": "isAirConditionWorking"
     },
     {
         "number": 3,
-        "question": "GANTRY SIREN WORKING"
+        "label": "GANTRY SIREN WORKING",
+        "question": "gateSirenWorking"
     },
     {
         "number": 4,
-        "question": "FLASHING BEACON"
+        "label": "FLASHING BEACON",
+        "question": "flashingBeacon"
     },
     {
         "number": 5,
-        "question": "SPREADER HOME"
+        "label": "SPREADER HOME",
+        "question": "spreaderHome"
     },
     {
         "number": 6,
-        "question": "SPREADER SKEW FUNCTION"
+        "label": "SPREADER SKEW FUNCTION",
+        "question": "spreaderSkewFunction"
     },
     {
         "number": 7,
-        "question": "SPREADER TRIM FUNCTION"
+        "label": "SPREADER TRIM FUNCTION",
+        "question": "spreaderTrimFunction"
     },
     {
         "number": 8,
-        "question": "SPREADER SHIFT FUNCTION"
+        "label": "SPREADER SHIFT FUNCTION",
+        "question": "spreaderShiftFunction"
     },
     {
         "number": 9,
-        "question": "HOIST SPEED LIMIT SWITCH"
+        "label": "HOIST SPEED LIMIT SWITCH",
+        "question": "hoistSpeedLimitSwitch"
     },
     {
         "number": 10,
-        "question": "TROLLEY LIMIT SWITCH"
+        "label": "TROLLEY LIMIT SWITCH",
+        "question": "trolleyLimitSwitch"
     },
     {
         "number": 11,
-        "question": "TROLLEY BRAKES"
+        "label": "TROLLEY BRAKES",
+        "question": "trolleyBrakes"
     },
     {
         "number": 12,
-        "question": "SPREADER AT 20FT OR 40FT"
+        "label": "SPREADER AT 20FT OR 40FT",
+        "question": "spreaderAt20ftOr40ft"
     },
     {
         "number": 13,
-        "question": "HOIST ROPE CONDITION"
+        "label": "HOIST ROPE CONDITION",
+        "question": "hoistRopeCondition",
     },
     {
         "number": 14,
-        "question": "CCTV"
+        "label": "CCTV",
+        "question": "cctv"
     },
     {
         "number": 15,
-        "question": "LCPS/ BOXSHAPE MOVEMENT"
+        "label": "LCPS/ BOXSHAPE MOVEMENT",
+        "question": "lcpsOrBoxshapeMovement"
     },
     {
         "number": 16,
-        "question": "CABIN INDICATOR LIGHTS"
+        "label": "CABIN INDICATOR LIGHTS",
+        "question": "cabinIndicatorLights"
     },
     {
         "number": 17,
-        "question": "GAMTRY ANTI COLLISION"
+        "label": "GAMTRY ANTI COLLISION",
+        "question": "gantryAntiCollision"
     },
     {
         "number": 18,
-        "question": "SIMATIC PANEL"
+        "label": "SIMATIC PANEL",
+        "question": "simaticPanel"
     },
     {
         "number": 19,
-        "question": "FIRE EXTINGUISHER"
+        "label": "FIRE EXTINGUISHER",
+        "question": "fireExtinquisher",
     },
     {
         "number":20,
-        "question": "SPREADER ELECTRIC CABLE"
+        "label": "SPREADER ELECTRIC CABLE",
+        "question": "spreaderElectricCable"
     },
     {
         "number": 21,
-        "question": "PA SYSTEM"
+        "label": "PA SYSTEM",
+        "question": "paSystem"
     },
     {
         "number": 22,
-        "question": "HORN"
+        "label": "HORN",
+        "question": "horn"
     },
     {
         "number": 23,
-        "question": "CABIN VHF RECEIVER"
+        "label": "CABIN VHF RECEIVER",
+        "question": "cabinVhfReceiver"
     },
     {
         "number": 24,
-        "question": "SPREADER INDICATOR LIGHTS"
+        "label": "SPREADER INDICATOR LIGHTS",
+        "question": "spreaderIndicatorLights"
     },
     {
         "number": 25,
-        "question": "OPERATOR SEAT"
+        "label": "OPERATOR SEAT",
+        "question": "operatorSeat"
     },
     {
         "number": 26,
-        "question": "FLIPPERS"
+        "label": "FLIPPERS",
+        "question": "flippers"
     },
     {
         "number": 27,
-        "question": "CONDITION OF FLIPPERS"
+        "label": "CONDITION OF FLIPPERS",
+        "question": "conditionOfFlippers"
     },
     {
         "number": 28,
-        "question": "CONDITION OF VMT"
+        "label": "CONDITION OF VMT",
+        "question": "conditionOfVmt"
     },
     {
         "number": 29,
-        "question": "WORKING LIGHTS"
+        "label": "WORKING LIGHTS",
+        "question": "workingLights"
     },
     {
         "number": 30,
-        "question": "GPS /LASER STEERING"
+        "label": "GPS/LASER STEERING",
+        "question": "gpsOrLaserSteering"
     }
 ]

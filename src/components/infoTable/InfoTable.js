@@ -1,11 +1,12 @@
 import React from 'react'
-import { Table, TableContainer, TableBody, TableCell, TableHead, TableRow, Paper, Tab } from '@mui/material'
+import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container } from '@mui/material'
+import './InfoTable.css'
 
 export default function InfoTable() {
     return (
-        <div>
-            <TableContainer>
-                <Table>
+        <div className='infotable'>
+            <Container component={Paper} elevation={3}>
+                <Table aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell>eRTG/RTG EQUIPMENT FAULTS</TableCell>
@@ -16,74 +17,74 @@ export default function InfoTable() {
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell>FAULTY CAMERA</TableCell>
+                            <TableCell>Faulty Camera</TableCell>
                             <TableCell>{null}</TableCell>
-                            <TableCell>TO BE USED</TableCell>
-                            <TableCell>REPORT FOR REPLACEMENT</TableCell>
+                            <TableCell>To be used</TableCell>
+                            <TableCell>Report for replacement</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>PA SYSTEM / HORN / INTERCOM NOT WORKING</TableCell>
+                            <TableCell>PA System or Horn or Intercom not working</TableCell>
                             <TableCell>{null}</TableCell>
-                            <TableCell>TO BE USED</TableCell>
-                            <TableCell>REPORT FOR REPLACEMENT</TableCell>
+                            <TableCell>To be used</TableCell>
+                            <TableCell>Report for replacement</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>SEAT CAN'T ADJUST</TableCell>
+                            <TableCell>Seat can't adjust</TableCell>
                             <TableCell>{null}</TableCell>
-                            <TableCell>TO BE USED</TableCell>
-                            <TableCell>REPORT FOR REPAIR</TableCell>
+                            <TableCell>To be used</TableCell>
+                            <TableCell>Report for repair</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>GPS NOT WORKING</TableCell>
+                            <TableCell>GPS not working</TableCell>
                             <TableCell>{null}</TableCell>
-                            <TableCell>TO BE USED</TableCell>
-                            <TableCell>REPORT FOR REPAIR</TableCell>
+                            <TableCell>To be used</TableCell>
+                            <TableCell>Report for repair</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>BROKEN WIPER</TableCell>
+                            <TableCell>Broken wiper</TableCell>
                             <TableCell>{null}</TableCell>
-                            <TableCell>TO BE USED</TableCell>
-                            <TableCell>REPORT FOR REPLACEMENT</TableCell>
+                            <TableCell>To be used</TableCell>
+                            <TableCell>Report for replacement</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>JOYSTICK COVER OFF</TableCell>
+                            <TableCell>Joystick Cover off</TableCell>
                             <TableCell>{null}</TableCell>
-                            <TableCell>TO BE USED</TableCell>
-                            <TableCell>REPORT FOR REPAIR</TableCell>
+                            <TableCell>To be used</TableCell>
+                            <TableCell>Report for repair</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>SPREADER INDICATOR LIGHTS NOT WORKING</TableCell>
-                            <TableCell>NOT TO BE USED</TableCell>
+                            <TableCell>Spreader Indicator Lights not working</TableCell>
+                            <TableCell>Not to be used</TableCell>
                             <TableCell>{null}</TableCell>
-                            <TableCell>REPORT FOR REPAIR</TableCell>
+                            <TableCell>Report for repair</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>VERY POOR VISIBILITY</TableCell>
-                            <TableCell>NOT TO BE USED</TableCell>
+                            <TableCell>Very Poor Visibilit</TableCell>
+                            <TableCell>Not to be used</TableCell>
                             <TableCell>{null}</TableCell>
-                            <TableCell>REPORT FOR CLEANING</TableCell>
+                            <TableCell>Report for cleaning</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>DGPS NOT WORKING</TableCell>
+                            <TableCell>DGPS not working</TableCell>
                             <TableCell>{null}</TableCell>
-                            <TableCell>TO BE USED</TableCell>
-                            <TableCell>REPORT FOR REPAIR</TableCell>
+                            <TableCell>To be used</TableCell>
+                            <TableCell>Report for repair</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>WHEEL PROTECTOR NOT PRESENT / DAMAGED</TableCell>
+                            <TableCell>Wheel Projector not present or damaged</TableCell>
                             <TableCell>{null}</TableCell>
-                            <TableCell>TO BE USED</TableCell>
-                            <TableCell>REPORT FOR REPLACEMENT</TableCell>
+                            <TableCell>To be used</TableCell>
+                            <TableCell>Report for replacement</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>WORM OUT KEY PADS</TableCell>
+                            <TableCell>Worn out key pads</TableCell>
                             <TableCell>{null}</TableCell>
-                            <TableCell>TO BE USED</TableCell>
-                            <TableCell>INFORM IT</TableCell>
+                            <TableCell>To be used</TableCell>
+                            <TableCell>Inform IT</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </Container>
         </div>
     )
 }
