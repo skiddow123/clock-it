@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container } from '@mui/material'
+import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, Typography } from '@mui/material'
 import './InfoTable.css'
 
 export default function InfoTable() {
@@ -54,7 +54,7 @@ export default function InfoTable() {
                         </TableRow>
                         <TableRow>
                             <TableCell>Spreader Indicator Lights not working</TableCell>
-                            <TableCell>Not to be used</TableCell>
+                            <TableCell><Typography style={{color: "#FFCCCB"}}>Not to be used</Typography></TableCell>
                             <TableCell>{null}</TableCell>
                             <TableCell>Report for repair</TableCell>
                         </TableRow>

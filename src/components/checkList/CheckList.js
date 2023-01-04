@@ -4,6 +4,7 @@ import { TextField, Button, FormControl, FormControlLabel, RadioGroup, Radio, Fo
 import { Form, Field, Formik, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import './CheckList.css'
+import axios from "axios"
 
 const constructFormInitialValues = (questions) => {
     let formInitialValues = {}
@@ -26,8 +27,16 @@ const constructFormValidationSchemaYupObject = (questions) => {
 }
 
 export default function CheckList({ tiltle, questions }) {
+    const api = axios.create({
+        baseURL: "http://localhost:8900/",
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+          }
+    })
     const [snackBarOpen, setSnackBarOpen] = useState(false)
     const [snackBarMessage, setSnackBarMessage] = useState("")
+    const [snackBarAlertSeverity, setSnackBarAlertSeverity] = useState("info")
 
     const formInitialValues = constructFormInitialValues(questions);
     const formValidationSchemaYupObject = constructFormValidationSchemaYupObject(questions);
@@ -41,6 +50,35 @@ export default function CheckList({ tiltle, questions }) {
         setSnackBarOpen(false)
     }
 
+    const handleFormSubmission = async (values) => {
+        let payload = values
+        payload["id"] = "alfa"
+        console.log(payload);
+        let res = await api.post("dataservices/v1/checklist/before", payload)
+        console.log(res);
+        // fetch("http://localhost:8900/dataservices/v1/checklist/before", {
+        //     method: "POST",
+        //     // mode: "no-cors",
+        //     headers: {dataservices/v1/checklist
+        //         "Content-Type": "application/json",
+        //         "Accept": "application/json"
+        //     },
+        //     body: JSON.stringify({"id":"eee","firstName":"bdbdbdbdb","lastName":"dbdbdbd","damageOnMachine":"true","diuCondition":"false","dieselGeneration":"true","eRoomDoors":"false","gantryMotors":"true","antiCollisionSensors":"false","catWhiskers":"true","steeringRod":"false","camera":"true","gantryGearBox":"false","wheelGuards":"true","accessGateSensors":"false","earthingSystem":"true","stairwayOrMonkeyLadder":"false","walkwayLights":"true","tyreOrRimOrHub":"false","ashorePowerCable":"true","cabinGlassStatus":"false","notes":""})
+        // })
+            // .then(res => {
+            //     if(res.ok) {
+            //         setSnackBarMessage("Form Submitted Successfully")
+            //         setSnackBarAlertSeverity("success")
+            //         setSnackBarOpen(true)
+            //     }
+            //     setSnackBarMessage("Form Submission Failed, Try again later")
+            //     setSnackBarAlertSeverity("error")
+            //     setSnackBarOpen(true)
+            // })
+        // console.log(JSON.stringify(values));
+        // setSnackBarMessage("Form Submitted Successfully")
+        // setSnackBarOpen(true)
+    }
     return (
         <div className='form'>
             <Snackbar
@@ -48,17 +86,15 @@ export default function CheckList({ tiltle, questions }) {
                 open={snackBarOpen}
                 onClose={handleSnackBarClose}
             >
-                <Alert severity='success' onClose={handleSnackBarClose}>
+                <Alert severity={snackBarAlertSeverity} onClose={handleSnackBarClose}>
                     {snackBarMessage}
                 </Alert>
             </Snackbar>
             <Card style={{ padding: "50px" }} elevation={3}>
                 <Typography gutterBottom variant='h6'>{tiltle}</Typography>
-                <Formik initialValues={formInitialValues} onSubmit={(values, props) => {
-                    console.log(JSON.stringify(values));
-                    setSnackBarMessage("Form Submitted Successfully")
-                    setSnackBarOpen(true)
-                }}
+                <Formik
+                    initialValues={formInitialValues}
+                    onSubmit={(values) => handleFormSubmission(values)}
                     validationSchema={formValidationSchema}
                 >
                     {
@@ -75,11 +111,10 @@ export default function CheckList({ tiltle, questions }) {
                                         questions.map(qstn =>
                                             <Grid key={qstn.number} xs={12} item>
                                                 <FormControl>
-                                                    <FormLabel id="demo-radio-buttons-group-label">{`${qstn.number}. ${qstn.label}`}</FormLabel>
+                                                    <FormLabel>{`${qstn.number}. ${qstn.label}`}</FormLabel>
                                                     <Field as={RadioGroup}
-                                                        aria-labelledby="demo-radio-buttons-group-label"
                                                         name={qstn.question}
-                                                        style={{ 'display': 'initial' }}
+                                                        style={{ 'display': 'inline' }}
                                                     >
                                                         <FormControlLabel value={true} control={<Radio />} label='Damaged' />
                                                         <FormControlLabel value={false} control={<Radio />} label="Not Damaged" />
