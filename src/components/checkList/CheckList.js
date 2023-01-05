@@ -102,15 +102,15 @@ export default function CheckList({ tiltle, questions }) {
                             <Form>
                                 <Grid container spacing={1}>
                                     <Grid xs={12} sm={6} item>
-                                        <Field as={TextField} name='firstName' label='First Name' helperText={<ErrorMessage name='firstName' variant="standard">{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
+                                        <Field as={TextField} required name='firstName' label='First Name' helperText={<ErrorMessage name='firstName'>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
                                     </Grid>
                                     <Grid xs={12} sm={6} item>
-                                        <Field as={TextField} name='lastName' label='Last Name' helperText={<ErrorMessage name='lastName' variant="standard">{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
+                                        <Field as={TextField} required name='lastName' label='Last Name' helperText={<ErrorMessage name='lastName'>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
                                     </Grid>
                                     {
                                         questions.map(qstn =>
                                             <Grid key={qstn.number} xs={12} item>
-                                                <FormControl>
+                                                <FormControl required>
                                                     <FormLabel>{`${qstn.number}. ${qstn.label}`}</FormLabel>
                                                     <Field as={RadioGroup}
                                                         name={qstn.question}
@@ -119,8 +119,9 @@ export default function CheckList({ tiltle, questions }) {
                                                         <FormControlLabel value={true} control={<Radio />} label='Damaged' />
                                                         <FormControlLabel value={false} control={<Radio />} label="Not Damaged" />
                                                     </Field>
+                                                    <FormHelperText error={true}><ErrorMessage name={qstn.question} /></FormHelperText>
                                                 </FormControl>
-                                                <FormHelperText error={true}><ErrorMessage name={qstn.question} /></FormHelperText>
+            
                                             </Grid>
                                         )
                                     }
