@@ -27,6 +27,10 @@ const constructFormValidationSchemaYupObject = (questions) => {
 }
 
 export default function CheckList({ tiltle, questions }) {
+    const [snackBarOpen, setSnackBarOpen] = useState(false)
+    const [snackBarMessage, setSnackBarMessage] = useState("")
+    const [snackBarAlertSeverity, setSnackBarAlertSeverity] = useState("info")
+    
     const api = axios.create({
         baseURL: "http://localhost:8900/",
         headers: {
@@ -34,9 +38,6 @@ export default function CheckList({ tiltle, questions }) {
             'Content-Type': 'application/json',
           }
     })
-    const [snackBarOpen, setSnackBarOpen] = useState(false)
-    const [snackBarMessage, setSnackBarMessage] = useState("")
-    const [snackBarAlertSeverity, setSnackBarAlertSeverity] = useState("info")
 
     const formInitialValues = constructFormInitialValues(questions);
     const formValidationSchemaYupObject = constructFormValidationSchemaYupObject(questions);

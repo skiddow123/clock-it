@@ -1,10 +1,11 @@
-import { Grid, Paper, TextField, Typography, Button } from '@mui/material'
+import { Grid, Paper, TextField, Typography, Button, Snackbar, Alert } from '@mui/material'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import React from 'react'
+import React, { useState } from 'react'
 import "./RegisterUser.css"
 import { Stack } from '@mui/system'
-import { Formik } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
+import { useAuthContext } from '../../context/AuthContext1'
 
 const formInitialValues = {
     email: "",
@@ -19,24 +20,67 @@ const validationSchema = Yup.object().shape({
         .oneOf([Yup.ref("password")], "passwords must match")
 })
 
-const handleRegisterUserFormSubmit = async (values) => {
-    console.log(values)
-} 
-
 export default function RegisterUser() {
+    const [snackBarOpen, setSnackBarOpen] = useState(false)
+    const [snackBarMessage, setSnackBarMessage] = useState("")
+    const [snackBarAlertSeverity, setSnackBarAlertSeverity] = useState("info")
+    const [loading, setLoading] = useState(false)
+    const { registerUser, currentUser } = useAuthContext()
+
+
+    const handleRegisterUserFormSubmit = async (values) => {
+        try {
+            setLoading(true)
+            await registerUser(values.email, values.password)
+            console.log(currentUser)
+              setSnackBarMessage("Registration Successful")
+              setSnackBarAlertSeverity("success")
+              setSnackBarOpen(true)
+        } catch {
+              setSnackBarMessage("Registration Failed")
+              setSnackBarAlertSeverity("error")
+              setSnackBarOpen(true)
+        }
+
+
+    }
+
+    const handleSnackBarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setSnackBarOpen(false)
+    }
     return (
         <Grid align="center">
+            <Snackbar
+                autoHideDuration={4000}
+                open={snackBarOpen}
+                onClose={handleSnackBarClose}
+            >
+                <Alert severity={snackBarAlertSeverity} onClose={handleSnackBarClose}>
+                    {snackBarMessage}
+                </Alert>
+            </Snackbar>
             <Paper className='paper' elevation={6} >
-                <PersonAddIcon color='primary' fontSize='large'/>
-                <Typography variant='h6'>Register A User</Typography>
-                <form>
-                    <Stack spacing={1}>
-                        <TextField label="Email" name='email' fullWidth />
-                        <TextField label="Password" name='password' fullWidt/>
-                        <TextField label="Confirm Password" name='confirmPassword' fullWidth/>
-                        <Button type='submit' variant='contained' fullWidth>Register</Button>
-                    </Stack>
-                </form>
+                <PersonAddIcon color='primary' fontSize='large' />
+                <Typography variant='h6'>Register User</Typography>
+                <Formik
+                    onSubmit={(values) => { handleRegisterUserFormSubmit(values) }}
+                    validationSchema={validationSchema}
+                    initialValues={formInitialValues}
+                >
+                    {({ errors, touched }) => (
+                        <Form>
+                            <Stack spacing={1}>
+                                <Field as={TextField} label="Email *" name='email' fullWidth />{errors.email && touched.email ? (<div className='error'>{errors.email}</div>) : null}
+                                <Field as={TextField} type='password' label="Password *" name='password' fullWidth />{errors.password && touched.password ? (<div className='error'>{errors.password}</div>) : null}
+                                <Field as={TextField} type='password' label="Confirm Password *" name='confirmPassword' fullWidth />{errors.confirmPassword && touched.confirmPassword ? (<div className='error'>{errors.confirmPassword}</div>) : null}
+                                <Button type='submit' disabled={loading} variant='contained' fullWidth>Login</Button>
+                            </Stack>
+                        </Form>
+                    )}
+                </Formik>
             </Paper>
         </Grid>
     )

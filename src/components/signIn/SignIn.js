@@ -1,9 +1,9 @@
-import { Grid, Paper, TextField, Typography, Button, FormControl } from '@mui/material'
+import { Grid, Paper, TextField, Typography, Button, Snackbar, Alert } from '@mui/material'
 import LoginIcon from '@mui/icons-material/Login';
-import React from 'react'
+import React, { useState } from 'react'
 import "./SignIn.css"
 import { Stack } from '@mui/system';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup'
 
 const formInitialValues = {
@@ -16,14 +16,36 @@ const validationSchema = Yup.object().shape({
     password: Yup.string().min(6, "Password can't be less than 6 charactors").required("Password is required")
 })
 
-const handleSignFormSubmit = async (values) => {
-    console.log(values);
-}
-
 export default function SignIn() {
+    const [snackBarOpen, setSnackBarOpen] = useState(false)
+    const [snackBarMessage, setSnackBarMessage] = useState("")
+    const [snackBarAlertSeverity, setSnackBarAlertSeverity] = useState("info")
+
+    const handleSignFormSubmit = async (values) => {
+        console.log(values);
+        setSnackBarMessage("Login Successful")
+        setSnackBarAlertSeverity("success")
+        setSnackBarOpen(true)
+    }
+
+    const handleSnackBarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setSnackBarOpen(false)
+    }
 
     return (
         <Grid align="center">
+            <Snackbar
+                autoHideDuration={4000}
+                open={snackBarOpen}
+                onClose={handleSnackBarClose}
+            >
+                <Alert severity={snackBarAlertSeverity} onClose={handleSnackBarClose}>
+                    {snackBarMessage}
+                </Alert>
+            </Snackbar>
             <Paper className='paper' elevation={6} >
                 <LoginIcon color='primary' fontSize='large' />
                 <Typography variant='h6'>Sign In</Typography>
@@ -32,17 +54,16 @@ export default function SignIn() {
                     validationSchema={validationSchema}
                     initialValues={formInitialValues}
                 >
-                    {({errors, touched}) => (
+                    {({ errors, touched }) => (
                         <Form>
                             <Stack spacing={1}>
-                                <Field as={TextField} label="Email *" name='email' fullWidth/>{errors.email && touched.email ? (<div className='error'>{errors.email}</div>) : null}
-                                <Field as={TextField} label="Password *" name='password' fullWidth/>{errors.password && touched.password ? (<div className='error'>{errors.password}</div>) : null}
+                                <Field as={TextField} label="Email *" name='email' fullWidth />{errors.email && touched.email ? (<div className='error'>{errors.email}</div>) : null}
+                                <Field as={TextField} type='password' label="Password *" name='password' fullWidth />{errors.password && touched.password ? (<div className='error'>{errors.password}</div>) : null}
                                 <Button type='submit' variant='contained' fullWidth>Login</Button>
                             </Stack>
                         </Form>
                     )}
                 </Formik>
-
             </Paper>
         </Grid>
     )
