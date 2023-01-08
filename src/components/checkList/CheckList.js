@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { TextField, Button, FormControl, FormControlLabel, RadioGroup, Radio, FormLabel, FormHelperText, Card, Grid, Typography, Snackbar, Alert } from '@mui/material'
+import { TextField, Button, FormControl, FormControlLabel, RadioGroup, Radio, FormLabel, FormHelperText, Card, Grid, Typography, Snackbar, Alert, Container, Paper, InputLabel, Select, MenuItem, Input } from '@mui/material'
 import { Form, Field, Formik, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import './CheckList.css'
@@ -9,8 +9,9 @@ import axios from "axios"
 const constructFormInitialValues = (questions) => {
     let formInitialValues = {}
 
-    formInitialValues["firstName"] = ""
-    formInitialValues["lastName"] = ""
+    formInitialValues["fullName"] = ""
+    formInitialValues["loginNumber"] = ""
+    formInitialValues["equipmentId"] = ""
     questions.map(questionObject => formInitialValues[questionObject.question] = "")
     formInitialValues["notes"] = ""
     return formInitialValues;
@@ -19,9 +20,10 @@ const constructFormInitialValues = (questions) => {
 const constructFormValidationSchemaYupObject = (questions) => {
     let formValidationSchemaYupObject = {}
 
-    questions.map(questionObject => formValidationSchemaYupObject[questionObject.question] = Yup.boolean().oneOf([true, false], "required").required(`Question ${questionObject.number} must be answered`))
-    formValidationSchemaYupObject["firstName"] = Yup.string().required("firstname is required")
-    formValidationSchemaYupObject["lastName"] = Yup.string().required("lastname is required");
+    questions.map(questionObject => formValidationSchemaYupObject[questionObject.question] = Yup.string().oneOf(["damaged", "not damaged"], "required").required(`Question ${questionObject.number} must be answered`))
+    formValidationSchemaYupObject["fullName"] = Yup.string().required("Full name is required")
+    formValidationSchemaYupObject["loginNumber"] = Yup.string().required("Login Number is required")
+    formValidationSchemaYupObject["equipmentId"] = Yup.string().required("Equipment Number is required")
     // formValidationSchemaYupObject["notes"] = Yup.string().required("Notes is required");  //TODO: check if notes is required
     return formValidationSchemaYupObject;
 }
@@ -30,13 +32,13 @@ export default function CheckList({ tiltle, questions }) {
     const [snackBarOpen, setSnackBarOpen] = useState(false)
     const [snackBarMessage, setSnackBarMessage] = useState("")
     const [snackBarAlertSeverity, setSnackBarAlertSeverity] = useState("info")
-    
+
     const api = axios.create({
         baseURL: "http://localhost:8900/",
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json',
-          }
+        }
     })
 
     const formInitialValues = constructFormInitialValues(questions);
@@ -66,16 +68,16 @@ export default function CheckList({ tiltle, questions }) {
         //     },
         //     body: JSON.stringify({"id":"eee","firstName":"bdbdbdbdb","lastName":"dbdbdbd","damageOnMachine":"true","diuCondition":"false","dieselGeneration":"true","eRoomDoors":"false","gantryMotors":"true","antiCollisionSensors":"false","catWhiskers":"true","steeringRod":"false","camera":"true","gantryGearBox":"false","wheelGuards":"true","accessGateSensors":"false","earthingSystem":"true","stairwayOrMonkeyLadder":"false","walkwayLights":"true","tyreOrRimOrHub":"false","ashorePowerCable":"true","cabinGlassStatus":"false","notes":""})
         // })
-            // .then(res => {
-            //     if(res.ok) {
-            //         setSnackBarMessage("Form Submitted Successfully")
-            //         setSnackBarAlertSeverity("success")
-            //         setSnackBarOpen(true)
-            //     }
-            //     setSnackBarMessage("Form Submission Failed, Try again later")
-            //     setSnackBarAlertSeverity("error")
-            //     setSnackBarOpen(true)
-            // })
+        // .then(res => {
+        //     if(res.ok) {
+        //         setSnackBarMessage("Form Submitted Successfully")
+        //         setSnackBarAlertSeverity("success")
+        //         setSnackBarOpen(true)
+        //     }
+        //     setSnackBarMessage("Form Submission Failed, Try again later")
+        //     setSnackBarAlertSeverity("error")
+        //     setSnackBarOpen(true)
+        // })
         // console.log(JSON.stringify(values));
         // setSnackBarMessage("Form Submitted Successfully")
         // setSnackBarOpen(true)
@@ -91,7 +93,7 @@ export default function CheckList({ tiltle, questions }) {
                     {snackBarMessage}
                 </Alert>
             </Snackbar>
-            <Card style={{ padding: "50px" }} elevation={3}>
+            <Container component={Paper} style={{ padding: "50px" }} elevation={3}>
                 <Typography gutterBottom variant='h6'>{tiltle}</Typography>
                 <Formik
                     initialValues={formInitialValues}
@@ -99,30 +101,87 @@ export default function CheckList({ tiltle, questions }) {
                     validationSchema={formValidationSchema}
                 >
                     {
-                        ({ props }) =>
+                        ({ dirty, isValid }) =>
                             <Form>
-                                <Grid container spacing={1}>
-                                    <Grid xs={12} sm={6} item>
-                                        <Field as={TextField} required name='firstName' label='First Name' helperText={<ErrorMessage name='firstName'>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
+                                <Grid container rowSpacing={3}>
+                                    <Grid sm={12} item>
+                                        <FormControl size='small' fullWidth>
+                                            <Field as={TextField} required name='loginNumber' label='Login Number' helperText={<ErrorMessage name='loginNumber'>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
+                                        </FormControl>
                                     </Grid>
-                                    <Grid xs={12} sm={6} item>
-                                        <Field as={TextField} required name='lastName' label='Last Name' helperText={<ErrorMessage name='lastName'>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
+                                    <Grid sm={12} item>
+                                        <FormControl fullWidth>
+                                            <Field as={TextField} required name='fullName' label='Full Name' helperText={<ErrorMessage name='fullName' fullWidth>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
+                                        </FormControl>
                                     </Grid>
+                                    <Grid sm={12} item>
+                                        <FormControl size='small' fullWidth>
+                                            <Field as={TextField} required name='equipmentId' label='Equipment ID' helperText={<ErrorMessage name='equipmentId' fullWidth>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
+                                        </FormControl>
+                                    </Grid>
+                                    {/* <Grid sm={12} item>
+                                        <FormControl fullWidth>
+                                            <InputLabel id="demo-simple-select-label">Shift</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                // value={age}
+                                                label="Shift"
+                                            // onChange={handleChange}
+                                            >
+                                                <MenuItem value="Day">Day</MenuItem>
+                                                <MenuItem value="Night">Night</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Grid> */}
+                                    {/* <Grid sm={12} item>
+                                        <FormControl fullWidth>
+                                            <InputLabel id="demo-simple-select-label">Shift Name</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                // value={age}
+                                                label="Shift Name"
+                                            // onChange={handleChange}
+                                            >
+                                                <MenuItem value="red eagle">Red Eagle</MenuItem>
+                                                <MenuItem value="blue falcon">Blue Falcon</MenuItem>
+                                                <MenuItem value="blue falcon">White Ox</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Grid> */}
+                                    {/* <Grid sm={12} item>
+                                        <FormControl fullWidth>
+                                            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                // value={age}
+                                                label="Status"
+                                            // onChange={handleChange}
+                                            >
+                                                <MenuItem value="active">Active</MenuItem>
+                                                <MenuItem value="inactive">Inactive</MenuItem>
+                                                <MenuItem value="pm">PM</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Grid> */}
                                     {
                                         questions.map(qstn =>
                                             <Grid key={qstn.number} xs={12} item>
-                                                <FormControl required>
-                                                    <FormLabel>{`${qstn.number}. ${qstn.label}`}</FormLabel>
+                                                <FormControl>
+                                                    <FormLabel>
+                                                        <Typography variant='subtitle2' style={{ fontWeight: "bold" }} gutterBottom>{`${qstn.number}. ${qstn.label}`}</Typography>
+                                                    </FormLabel>
                                                     <Field as={RadioGroup}
                                                         name={qstn.question}
-                                                        style={{ 'display': 'inline' }}
+                                                    // style={{ 'display': 'inline' }}
                                                     >
-                                                        <FormControlLabel value={true} control={<Radio />} label='Damaged' />
-                                                        <FormControlLabel value={false} control={<Radio />} label="Not Damaged" />
+                                                        <FormControlLabel style={{fontWeight: 200}} value={"damaged"} control={<Radio />} label='Damaged' labelPlacement='end' />
+                                                        <FormControlLabel value={"not damaged"} control={<Radio />} label="Not Damaged" labelPlacement='end' />
                                                     </Field>
                                                     <FormHelperText error={true}><ErrorMessage name={qstn.question} /></FormHelperText>
                                                 </FormControl>
-            
                                             </Grid>
                                         )
                                     }
@@ -130,13 +189,13 @@ export default function CheckList({ tiltle, questions }) {
                                         <Field as={TextField} multiline={true} rows='3' name='notes' label='notes' fullWidth></Field>
                                     </Grid>
                                     <Grid xs={12} item>
-                                        <Button type='submit' variant='contained' color='primary' fullWidth>Clock In</Button>
+                                        <Button type='submit' disabled={ !dirty || !isValid } variant='contained' color='primary' fullWidth>Clock In</Button>
                                     </Grid>
                                 </Grid>
                             </Form>
                     }
                 </Formik>
-            </Card>
+            </Container>
         </div>
     )
 }

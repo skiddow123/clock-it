@@ -11,20 +11,20 @@ const tableHeaderStyle ={
 }
 
 const toBeUsedStyle = {
-    fontWeight: "bold",
+    // fontWeight: "bold",
     fontSize: "0.75rem",
-    color: "white",
-    backgroundColor: "#4c8c4a",
+    color: "black",
+    backgroundColor: "#dbeddb",
     borderRadius: 8,
     padding: "3px 10px", 
     display: "inline-block"
 }
 
 const notToBeUsedStyle = {
-    fontWeight: "bold",
+    // fontWeight: "bold",
     fontSize: "0.75rem",
-    color: "white",
-    backgroundColor: "#ba000d",
+    color: "black",
+    backgroundColor: "#ffe2dd",
     borderRadius: 8,
     padding: "3px 10px", 
     display: "inline-block"

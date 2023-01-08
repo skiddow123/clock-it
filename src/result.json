@@ -1,0 +1,27 @@
+{
+    "id": "gsgsgs",
+    "shift": "night",
+    "shiftName": "red eagle",
+    "fullname": "hddhdhd dhdhhddh",
+    "status": "active",
+    "equipmentId": "RTG 15",
+    "loginNumber": "dhhdhdh",
+    "before": {
+        "camera": "damaged",
+        "trolley": "damaged"
+    },
+    "after": {
+        "camera": "damaged",
+        "spreader": "not damaged"
+    },
+    "faults": [
+        {
+            "fault": "hdhdhhd",
+            "description": "hhdhdhdhd ydhydyhdydy"
+        },
+        {
+            "fault": "hdhdhhd",
+            "description": "hhdhdhdhd ydhydyhdydy"
+        }
+    ]
+}

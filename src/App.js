@@ -17,7 +17,7 @@ function App() {
   return (
     <BrowserRouter>
       <NavbarComponent />
-      <div className='content'>
+      {/* <div className='content'> */}
         {/* <AuthProvider> */}
         <Routes>
             <Route path='/' element={<HomePage />} />
@@ -27,7 +27,7 @@ function App() {
             <Route path='/postcheck' element={<ClockOut />} />
           </Routes>
         {/* </AuthProvider> */}
-      </div>
+      {/* </div> */}
     </BrowserRouter>
   );
 }
