@@ -243,3 +243,44 @@ export const afterStartupParts = [
         "question": "gpsOrLaserSteering"
     }
 ]
+
+export const shiftItems = [
+    {
+        label: "Day",
+        value: "day"
+    },
+    {
+        label: "Night",
+        value: "night"
+    }
+]
+
+export const shiftNameItems = [
+    {
+        label: "Red Eagle",
+        value: "red eagle"
+    },
+    {
+        label: "Blue Falcon",
+        value: "blue falcon"
+    },
+    {
+        label: "White Ox",
+        value: "white ox"
+    }
+]
+
+export const statusItems = [
+    {
+        label: "Active",
+        value: "active"
+    },
+    {
+        label: "Inactive",
+        value: "inactive"
+    },
+    {
+        label: "PM",
+        value: "pm"
+    }
+]

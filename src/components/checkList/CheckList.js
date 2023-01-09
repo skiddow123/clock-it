@@ -1,10 +1,15 @@
 import React from 'react'
 import { useState } from 'react'
-import { TextField, Button, FormControl, FormControlLabel, RadioGroup, Radio, FormLabel, FormHelperText, Card, Grid, Typography, Snackbar, Alert, Container, Paper, InputLabel, Select, MenuItem, Input } from '@mui/material'
+import { TextField, Button, FormControl, FormControlLabel, RadioGroup, Radio, FormLabel, FormHelperText, Card, Grid, Typography, Snackbar, Alert, Container, Paper, InputLabel, Select, MenuItem, Input, IconButton } from '@mui/material'
 import { Form, Field, Formik, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import './CheckList.css'
 import axios from "axios"
+import FormikSelect from '../FormikSelect/FormikSelect'
+import { shiftNameItems, statusItems, shiftItems } from '../../EquipmentParts'
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
 
 const constructFormInitialValues = (questions) => {
     let formInitialValues = {}
@@ -12,6 +17,9 @@ const constructFormInitialValues = (questions) => {
     formInitialValues["fullName"] = ""
     formInitialValues["loginNumber"] = ""
     formInitialValues["equipmentId"] = ""
+    formInitialValues["shift"] = ""
+    formInitialValues["shiftName"] = ""
+    formInitialValues["status"] = ""
     questions.map(questionObject => formInitialValues[questionObject.question] = "")
     formInitialValues["notes"] = ""
     return formInitialValues;
@@ -24,14 +32,29 @@ const constructFormValidationSchemaYupObject = (questions) => {
     formValidationSchemaYupObject["fullName"] = Yup.string().required("Full name is required")
     formValidationSchemaYupObject["loginNumber"] = Yup.string().required("Login Number is required")
     formValidationSchemaYupObject["equipmentId"] = Yup.string().required("Equipment Number is required")
+    formValidationSchemaYupObject["shift"] = Yup.string().required("Shift is required")
+    formValidationSchemaYupObject["shiftName"] = Yup.string().required("Shift Name is required")
+    formValidationSchemaYupObject["status"] = Yup.string().required("Status Name is required")
     // formValidationSchemaYupObject["notes"] = Yup.string().required("Notes is required");  //TODO: check if notes is required
     return formValidationSchemaYupObject;
 }
+
 
 export default function CheckList({ tiltle, questions }) {
     const [snackBarOpen, setSnackBarOpen] = useState(false)
     const [snackBarMessage, setSnackBarMessage] = useState("")
     const [snackBarAlertSeverity, setSnackBarAlertSeverity] = useState("info")
+    const [damagedFields, setDamagedFields] = useState([])
+
+    const handleAddDamageFiel = () => {
+        setDamagedFields([...damagedFields, { fault: "", description: "" }])
+    }
+
+    const handleRemoveDamageFiel = (index) => {
+        const values = [...damagedFields]
+        values.splice(index, 1)
+        setDamagedFields(values)
+    }
 
     const api = axios.create({
         baseURL: "http://localhost:8900/",
@@ -55,7 +78,7 @@ export default function CheckList({ tiltle, questions }) {
 
     const handleFormSubmission = async (values) => {
         let payload = values
-        payload["id"] = "alfa"
+        // payload["id"] = "alfa"
         console.log(payload);
         let res = await api.post("dataservices/v1/checklist/before", payload)
         console.log(res);
@@ -119,77 +142,66 @@ export default function CheckList({ tiltle, questions }) {
                                             <Field as={TextField} required name='equipmentId' label='Equipment ID' helperText={<ErrorMessage name='equipmentId' fullWidth>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
                                         </FormControl>
                                     </Grid>
-                                    {/* <Grid sm={12} item>
-                                        <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">Shift</InputLabel>
-                                            <Select
-                                                labelId="demo-simple-select-label"
-                                                id="demo-simple-select"
-                                                // value={age}
-                                                label="Shift"
-                                            // onChange={handleChange}
-                                            >
-                                                <MenuItem value="Day">Day</MenuItem>
-                                                <MenuItem value="Night">Night</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Grid> */}
-                                    {/* <Grid sm={12} item>
-                                        <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">Shift Name</InputLabel>
-                                            <Select
-                                                labelId="demo-simple-select-label"
-                                                id="demo-simple-select"
-                                                // value={age}
-                                                label="Shift Name"
-                                            // onChange={handleChange}
-                                            >
-                                                <MenuItem value="red eagle">Red Eagle</MenuItem>
-                                                <MenuItem value="blue falcon">Blue Falcon</MenuItem>
-                                                <MenuItem value="blue falcon">White Ox</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Grid> */}
-                                    {/* <Grid sm={12} item>
-                                        <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                                            <Select
-                                                labelId="demo-simple-select-label"
-                                                id="demo-simple-select"
-                                                // value={age}
-                                                label="Status"
-                                            // onChange={handleChange}
-                                            >
-                                                <MenuItem value="active">Active</MenuItem>
-                                                <MenuItem value="inactive">Inactive</MenuItem>
-                                                <MenuItem value="pm">PM</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Grid> */}
+                                    <Grid item sm={12}>
+                                        <FormikSelect name="shift" label="Shift" errorString="required" menuItems={shiftItems} />
+                                    </Grid>
+                                    <Grid item sm={12}>
+                                        <FormikSelect name="shiftName" label="Shift Name" errorString="required" menuItems={shiftNameItems} />
+                                    </Grid>
+                                    <Grid item sm={12}>
+                                        <FormikSelect name="status" label="Status" errorString="required" menuItems={statusItems} />
+                                    </Grid>
                                     {
                                         questions.map(qstn =>
                                             <Grid key={qstn.number} xs={12} item>
                                                 <FormControl>
                                                     <FormLabel>
-                                                        <Typography variant='subtitle2' style={{ fontWeight: "bold" }} gutterBottom>{`${qstn.number}. ${qstn.label}`}</Typography>
+                                                        <Typography variant='subtitle2' style={{ fontWeight: "bold", fontSize: 20 }} gutterBottom>{`${qstn.number}. ${qstn.label}`}</Typography>
                                                     </FormLabel>
                                                     <Field as={RadioGroup}
                                                         name={qstn.question}
-                                                    // style={{ 'display': 'inline' }}
+                                                        style={{ 'display': 'inline' }}
                                                     >
-                                                        <FormControlLabel style={{fontWeight: 200}} value={"damaged"} control={<Radio />} label='Damaged' labelPlacement='end' />
-                                                        <FormControlLabel value={"not damaged"} control={<Radio />} label="Not Damaged" labelPlacement='end' />
+                                                        <FormControlLabel sx={{ fontSize: 100 }} value={"damaged"} control={<Radio />} label='Damaged' />
+                                                        <FormControlLabel sx={{ fontWeight: 100 }} value={"not damaged"} control={<Radio />} label="Not Damaged" />
                                                     </Field>
                                                     <FormHelperText error={true}><ErrorMessage name={qstn.question} /></FormHelperText>
                                                 </FormControl>
                                             </Grid>
                                         )
                                     }
-                                    <Grid xs={12} item>
+                                    {
+                                        damagedFields.map((damagedField, index) =>
+                                            <Grid key={index} container spacing={3}>
+                                                <Grid sm={5} item>
+                                                    <FormControl style={{ marginBottom: "5px" }} size='small' fullWidth>
+                                                        <Field as={TextField} required name={`fault${index}`} label="Fault" helperText={<ErrorMessage name={`fault-${index}`}>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
+                                                    </FormControl>
+                                                </Grid>
+                                                <Grid key={index} sm={5} item>
+                                                    <FormControl style={{ marginBottom: "5px" }} size='small' fullWidth>
+                                                        <Field as={TextField} required name={`faultDescription${index}`} label="Fault Description" helperText={<ErrorMessage name={`fault-${index}`}>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
+                                                    </FormControl>
+                                                </Grid>
+                                                <Grid sm={2} item>
+                                                    <IconButton onClick={() => handleRemoveDamageFiel(index)} color="error"><RemoveCircleIcon /></IconButton>
+                                                </Grid>
+                                            </Grid>
+                                        )
+                                    }
+                                    <Button
+                                        variant='outlined'
+                                        startIcon={<AddCircleIcon />}
+                                        style={{ margin: "5px" }}
+                                        onClick={handleAddDamageFiel}
+                                    >
+                                        Add Damage
+                                    </Button>
+                                    {/* <Grid xs={12} item>
                                         <Field as={TextField} multiline={true} rows='3' name='notes' label='notes' fullWidth></Field>
-                                    </Grid>
+                                    </Grid> */}
                                     <Grid xs={12} item>
-                                        <Button type='submit' disabled={ !dirty || !isValid } variant='contained' color='primary' fullWidth>Clock In</Button>
+                                        <Button type='submit' disabled={!dirty || !isValid} variant='contained' color='primary' fullWidth>Clock In</Button>
                                     </Grid>
                                 </Grid>
                             </Form>
