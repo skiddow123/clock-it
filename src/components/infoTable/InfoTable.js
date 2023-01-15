@@ -33,12 +33,12 @@ const notToBeUsedStyle = {
     return (
         <div className='infotable'>
             <TableContainer component={Paper} elevation={3}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell style={tableHeaderStyle}>eRTG/RTG EQUIPMENT FAULTS</TableCell>
-                            <TableCell style={tableHeaderStyle}>USAGE STATUS</TableCell>
-                            <TableCell style={tableHeaderStyle}>ACTION</TableCell>
+                            <TableCell style={tableHeaderStyle}><Typography>eRTG/RTG EQUIPMENT FAULTS</Typography></TableCell>
+                            <TableCell style={tableHeaderStyle}><Typography>USAGE STATUS</Typography></TableCell>
+                            <TableCell style={tableHeaderStyle}><Typography>ACTION</Typography></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

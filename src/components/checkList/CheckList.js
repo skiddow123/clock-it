@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { TextField, Button, FormControl, FormControlLabel, RadioGroup, Radio, FormLabel, FormHelperText, Card, Grid, Typography, Snackbar, Alert, Container, Paper, InputLabel, Select, MenuItem, Input, IconButton } from '@mui/material'
-import { Form, Field, Formik, ErrorMessage } from 'formik'
+import { Form, Field, Formik, ErrorMessage, FieldArray } from 'formik'
 import * as Yup from 'yup'
 import './CheckList.css'
 import axios from "axios"
@@ -21,7 +21,9 @@ const constructFormInitialValues = (questions) => {
     formInitialValues["shiftName"] = ""
     formInitialValues["status"] = ""
     questions.map(questionObject => formInitialValues[questionObject.question] = "")
-    formInitialValues["notes"] = ""
+    formInitialValues["faults"] = [{ fault: "", description: "" }]
+    // formInitialValues["notes"] = ""
+
     return formInitialValues;
 }
 
@@ -35,26 +37,20 @@ const constructFormValidationSchemaYupObject = (questions) => {
     formValidationSchemaYupObject["shift"] = Yup.string().required("Shift is required")
     formValidationSchemaYupObject["shiftName"] = Yup.string().required("Shift Name is required")
     formValidationSchemaYupObject["status"] = Yup.string().required("Status Name is required")
+    formValidationSchemaYupObject["faults"] = Yup.array().of(Yup.object({
+        fault: Yup.string().required("required"),
+        description: Yup.string().required("required")
+    }))
     // formValidationSchemaYupObject["notes"] = Yup.string().required("Notes is required");  //TODO: check if notes is required
+
     return formValidationSchemaYupObject;
 }
-
 
 export default function CheckList({ tiltle, questions }) {
     const [snackBarOpen, setSnackBarOpen] = useState(false)
     const [snackBarMessage, setSnackBarMessage] = useState("")
     const [snackBarAlertSeverity, setSnackBarAlertSeverity] = useState("info")
-    const [damagedFields, setDamagedFields] = useState([])
 
-    const handleAddDamageFiel = () => {
-        setDamagedFields([...damagedFields, { fault: "", description: "" }])
-    }
-
-    const handleRemoveDamageFiel = (index) => {
-        const values = [...damagedFields]
-        values.splice(index, 1)
-        setDamagedFields(values)
-    }
 
     const api = axios.create({
         baseURL: "http://localhost:8900/",
@@ -65,8 +61,9 @@ export default function CheckList({ tiltle, questions }) {
     })
 
     const formInitialValues = constructFormInitialValues(questions);
-    const formValidationSchemaYupObject = constructFormValidationSchemaYupObject(questions);
 
+
+    const formValidationSchemaYupObject = constructFormValidationSchemaYupObject(questions)
     const formValidationSchema = Yup.object().shape(formValidationSchemaYupObject)
 
     const handleSnackBarClose = (event, reason) => {
@@ -124,7 +121,7 @@ export default function CheckList({ tiltle, questions }) {
                     validationSchema={formValidationSchema}
                 >
                     {
-                        ({ dirty, isValid }) =>
+                        ({ values, dirty, isValid }) =>
                             <Form>
                                 <Grid container rowSpacing={3}>
                                     <Grid sm={12} item>
@@ -170,36 +167,51 @@ export default function CheckList({ tiltle, questions }) {
                                             </Grid>
                                         )
                                     }
-                                    {
-                                        damagedFields.map((damagedField, index) =>
-                                            <Grid key={index} container spacing={3}>
-                                                <Grid sm={5} item>
-                                                    <FormControl style={{ marginBottom: "5px" }} size='small' fullWidth>
-                                                        <Field as={TextField} required name={`fault${index}`} label="Fault" helperText={<ErrorMessage name={`fault-${index}`}>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
-                                                    </FormControl>
-                                                </Grid>
-                                                <Grid key={index} sm={5} item>
-                                                    <FormControl style={{ marginBottom: "5px" }} size='small' fullWidth>
-                                                        <Field as={TextField} required name={`faultDescription${index}`} label="Fault Description" helperText={<ErrorMessage name={`fault-${index}`}>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
-                                                    </FormControl>
-                                                </Grid>
-                                                <Grid sm={2} item>
-                                                    <IconButton onClick={() => handleRemoveDamageFiel(index)} color="error"><RemoveCircleIcon /></IconButton>
-                                                </Grid>
-                                            </Grid>
-                                        )
-                                    }
-                                    <Button
-                                        variant='outlined'
-                                        startIcon={<AddCircleIcon />}
-                                        style={{ margin: "5px" }}
-                                        onClick={handleAddDamageFiel}
-                                    >
-                                        Add Damage
-                                    </Button>
-                                    {/* <Grid xs={12} item>
-                                        <Field as={TextField} multiline={true} rows='3' name='notes' label='notes' fullWidth></Field>
-                                    </Grid> */}
+                                    <Grid item sm={12}>
+                                        <Typography variant='h6'>Faults</Typography>
+                                    </Grid>
+                                    <FieldArray name='faults'>
+                                        {
+                                            ({ push, remove }) => (
+                                                <div>
+                                                    {   
+                                                        values.faults.map((fault, index) => (
+                                                            <Grid key={index} container spacing={3}>
+                                                                <Grid sm={5} item>
+                                                                    <FormControl style={{ marginBottom: "5px" }} size='small' fullWidth>
+                                                                        <Field as={TextField} required name={`faults.${index}.fault`} label="Fault" helperText={<ErrorMessage name={`fault.${index}.fault`}>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
+                                                                    </FormControl>
+                                                                </Grid>
+                                                                <Grid key={index} sm={5} item>
+                                                                    <FormControl style={{ marginBottom: "5px" }} size='small' fullWidth>
+                                                                        <Field as={TextField} required name={`faults.${index}.description`} label="Fault Description" helperText={<ErrorMessage name={`faults${index}.description`}>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
+                                                                    </FormControl>
+                                                                </Grid>
+                                                                <Grid sm={2} item>
+                                                                    <IconButton onClick={() => remove(index)} color="error"><RemoveCircleIcon /></IconButton>
+                                                                </Grid>
+                                                            </Grid>
+                                                        ))
+                                                    }
+                                                    <Grid item>
+                                                        <Button
+                                                            variant='outlined'
+                                                            startIcon={<AddCircleIcon />}
+                                                            style={{ margin: "5px" }}
+                                                            onClick={ () => {
+                                                                push({
+                                                                    fault: "",
+                                                                    description: ""
+                                                                })
+                                                            }}
+                                                        >
+                                                            Add Fault
+                                                        </Button>
+                                                    </Grid>
+                                                </div>
+                                            )
+                                        }
+                                    </FieldArray>
                                     <Grid xs={12} item>
                                         <Button type='submit' disabled={!dirty || !isValid} variant='contained' color='primary' fullWidth>Clock In</Button>
                                     </Grid>
