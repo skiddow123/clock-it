@@ -11,7 +11,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 
-const constructFormInitialValues = (beforeQuestions, afterQuestions) => {
+const constructFormInitialValues = (questions) => {
     let formInitialValues = {}
 
     formInitialValues["fullName"] = ""
@@ -20,28 +20,17 @@ const constructFormInitialValues = (beforeQuestions, afterQuestions) => {
     formInitialValues["shift"] = ""
     formInitialValues["shiftName"] = ""
     formInitialValues["status"] = ""
-    formInitialValues["before"] = {}
-    beforeQuestions.map(questionObject => formInitialValues.before[questionObject.question] = "")
-    formInitialValues["after"] = {}
-    afterQuestions.map(questionObject => formInitialValues.after[questionObject.question] = "")
-
+    questions.map(questionObject => formInitialValues[questionObject.question] = "")
     formInitialValues["faults"] = [{ fault: "", description: "" }]
     // formInitialValues["notes"] = ""
 
-    console.log(formInitialValues);
     return formInitialValues;
 }
 
-const constructFormValidationSchemaYupObject = (beforeQuestions, afterQuestions) => {
+const constructFormValidationSchemaYupObject = (questions) => {
     let formValidationSchemaYupObject = {}
-    let beforeShape = {}
-    let afterShape = {}
 
-
-    beforeQuestions.map(questionObject => beforeShape[questionObject.question] = Yup.string().oneOf(["damaged", "not damaged"], "required").required(`Question ${questionObject.number} must be answered`))
-    afterQuestions.map(questionObject => afterShape[questionObject.question] = Yup.string().oneOf(["damaged", "not damaged"], "required").required(`Question ${questionObject.number} must be answered`))
-
-    // beforeQuestions.map(questionObject => formValidationSchemaYupObject[questionObject.question] = Yup.string().oneOf(["damaged", "not damaged"], "required").required(`Question ${questionObject.number} must be answered`))
+    questions.map(questionObject => formValidationSchemaYupObject[questionObject.question] = Yup.string().oneOf(["damaged", "not damaged"], "required").required(`Question ${questionObject.number} must be answered`))
     formValidationSchemaYupObject["fullName"] = Yup.string().required("Full name is required")
     formValidationSchemaYupObject["loginNumber"] = Yup.string().required("Login Number is required")
     formValidationSchemaYupObject["equipmentId"] = Yup.string().required("Equipment Number is required")
@@ -52,14 +41,12 @@ const constructFormValidationSchemaYupObject = (beforeQuestions, afterQuestions)
         fault: Yup.string().required("required"),
         description: Yup.string().required("required")
     }))
-    formValidationSchemaYupObject["before"] = Yup.object().shape(beforeShape)
-    formValidationSchemaYupObject["after"] = Yup.object().shape(afterShape)
     // formValidationSchemaYupObject["notes"] = Yup.string().required("Notes is required");  //TODO: check if notes is required
 
     return formValidationSchemaYupObject;
 }
 
-export default function CheckList({ tiltle, beforeQuestions, afterQuestions}) {
+export default function CheckList({ tiltle, questions }) {
     const [snackBarOpen, setSnackBarOpen] = useState(false)
     const [snackBarMessage, setSnackBarMessage] = useState("")
     const [snackBarAlertSeverity, setSnackBarAlertSeverity] = useState("info")
@@ -73,10 +60,10 @@ export default function CheckList({ tiltle, beforeQuestions, afterQuestions}) {
         }
     })
 
-    const formInitialValues = constructFormInitialValues(beforeQuestions, afterQuestions);
+    const formInitialValues = constructFormInitialValues(questions);
 
 
-    const formValidationSchemaYupObject = constructFormValidationSchemaYupObject(beforeQuestions, afterQuestions)
+    const formValidationSchemaYupObject = constructFormValidationSchemaYupObject(questions)
     const formValidationSchema = Yup.object().shape(formValidationSchemaYupObject)
 
     const handleSnackBarClose = (event, reason) => {
@@ -162,34 +149,14 @@ export default function CheckList({ tiltle, beforeQuestions, afterQuestions}) {
                                         <FormikSelect name="status" label="Status" errorString="required" menuItems={statusItems} />
                                     </Grid>
                                     {
-                                        beforeQuestions.map(qstn =>
+                                        questions.map(qstn =>
                                             <Grid key={qstn.number} xs={12} item>
                                                 <FormControl>
                                                     <FormLabel>
                                                         <Typography variant='subtitle2' style={{ fontWeight: "bold", fontSize: 20 }} gutterBottom>{`${qstn.number}. ${qstn.label}`}</Typography>
                                                     </FormLabel>
                                                     <Field as={RadioGroup}
-                                                        name={`before.${qstn.question}`}
-                                                        style={{ 'display': 'inline' }}
-                                                    >
-                                                        <FormControlLabel sx={{ fontSize: 100 }} value={"damaged"} control={<Radio />} label='Damaged' />
-                                                        <FormControlLabel sx={{ fontWeight: 100 }} value={"not damaged"} control={<Radio />} label="Not Damaged" />
-                                                    </Field>
-                                                    <FormHelperText error={true}><ErrorMessage name={qstn.question} /></FormHelperText>
-                                                </FormControl>
-                                            </Grid>
-                                        )
-                                    }
-                                    <Typography>After Checklist</Typography>
-                                    {
-                                        afterQuestions.map(qstn =>
-                                            <Grid key={qstn.number} xs={12} item>
-                                                <FormControl>
-                                                    <FormLabel>
-                                                        <Typography variant='subtitle2' style={{ fontWeight: "bold", fontSize: 20 }} gutterBottom>{`${qstn.number}. ${qstn.label}`}</Typography>
-                                                    </FormLabel>
-                                                    <Field as={RadioGroup}
-                                                        name={`after.${qstn.question}`}
+                                                        name={qstn.question}
                                                         style={{ 'display': 'inline' }}
                                                     >
                                                         <FormControlLabel sx={{ fontSize: 100 }} value={"damaged"} control={<Radio />} label='Damaged' />
