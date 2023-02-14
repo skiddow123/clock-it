@@ -9,6 +9,7 @@ import FormikSelect from '../FormikSelect/FormikSelect'
 import { shiftNameItems, statusItems, shiftItems } from '../../EquipmentParts'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import FormikTextField from '../FormikTextField/FormikTextField'
 
 
 const constructFormInitialValues = (beforeQuestions, afterQuestions) => {
@@ -59,7 +60,7 @@ const constructFormValidationSchemaYupObject = (beforeQuestions, afterQuestions)
     return formValidationSchemaYupObject;
 }
 
-export default function CheckList({ tiltle, beforeQuestions, afterQuestions}) {
+export default function CheckList({ tiltle, beforeQuestions, afterQuestions }) {
     const [snackBarOpen, setSnackBarOpen] = useState(false)
     const [snackBarMessage, setSnackBarMessage] = useState("")
     const [snackBarAlertSeverity, setSnackBarAlertSeverity] = useState("info")
@@ -134,37 +135,32 @@ export default function CheckList({ tiltle, beforeQuestions, afterQuestions}) {
                     validationSchema={formValidationSchema}
                 >
                     {
-                        ({ values, dirty, isValid, isSubmitting, handleReset}) =>
+                        ({ values, dirty, isValid, isSubmitting, handleReset }) =>
                             <Form>
-                                <Grid container rowSpacing={3}>
-                                    <Grid sm={12} item>
-                                        <FormControl size='small' fullWidth>
-                                            <Field as={TextField} required name='loginNumber' label='Login Number' helperText={<ErrorMessage name='loginNumber'>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
-                                        </FormControl>
+                                <Grid container spacing={3}>
+                                    <Grid sm={6} item>
+                                        <FormikTextField name='loginNumber' label='Login Number' />
                                     </Grid>
-                                    <Grid sm={12} item>
-                                        <FormControl fullWidth>
-                                            <Field as={TextField} required name='fullName' label='Full Name' helperText={<ErrorMessage name='fullName' fullWidth>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
-                                        </FormControl>
+                                    <Grid sm={6} item>
+                                        <FormikTextField name='fullName' label='Full Name' />
                                     </Grid>
-                                    <Grid sm={12} item>
-                                        <FormControl size='small' fullWidth>
-                                            <Field as={TextField} required name='equipmentId' label='Equipment ID' helperText={<ErrorMessage name='equipmentId' fullWidth>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
-                                        </FormControl>
+                                    <Grid sm={6} item>
+                                        <FormikTextField name='equipmentId' label='Equipment ID' />
                                     </Grid>
-                                    <Grid item sm={12}>
-                                        <FormikSelect name="shift" label="Shift" errorString="required" menuItems={shiftItems} />
+                                    <Grid item sm={6}>
+                                        <FormikSelect name='shift' label="Shift" options={shiftItems}/>
                                     </Grid>
-                                    <Grid item sm={12}>
-                                        <FormikSelect name="shiftName" label="Shift Name" errorString="required" menuItems={shiftNameItems} />
+                                    <Grid item sm={6}>
+                                        <FormikSelect name="shiftName" label="Shift Name" errorString="required" options={shiftNameItems} />
                                     </Grid>
-                                    <Grid item sm={12}>
-                                        <FormikSelect name="status" label="Status" errorString="required" menuItems={statusItems} />
+                                    <Grid item sm={6}>
+                                        <FormikSelect name="status" label="Status" errorString="required" options={statusItems} />
                                     </Grid>
+                                    <Grid sm={12} item><Typography>Before Checklist</Typography></Grid>
                                     {
                                         beforeQuestions.map(qstn =>
-                                            <Grid key={qstn.number} xs={12} item>
-                                                <FormControl>
+                                            <Grid key={qstn.number} sm={12} item>
+                                                <FormControl sx={{display: "flex" ,justifyContent: "space-spa", flexDirection: ""}}>
                                                     <FormLabel>
                                                         <Typography variant='subtitle2' style={{ fontWeight: "bold", fontSize: 20 }} gutterBottom>{`${qstn.number}. ${qstn.label}`}</Typography>
                                                     </FormLabel>
@@ -172,18 +168,18 @@ export default function CheckList({ tiltle, beforeQuestions, afterQuestions}) {
                                                         name={`before.${qstn.question}`}
                                                         style={{ 'display': 'inline' }}
                                                     >
-                                                        <FormControlLabel sx={{ fontSize: 100 }} value={"damaged"} control={<Radio />} label='Damaged' />
-                                                        <FormControlLabel sx={{ fontWeight: 100 }} value={"not damaged"} control={<Radio />} label="Not Damaged" />
+                                                        <FormControlLabel value={"damaged"} control={<Radio />} label='Damaged' />
+                                                        <FormControlLabel value={"not damaged"} control={<Radio />} label="Not Damaged" />
                                                     </Field>
                                                     <FormHelperText error={true}><ErrorMessage name={qstn.question} /></FormHelperText>
                                                 </FormControl>
                                             </Grid>
                                         )
                                     }
-                                    <Typography>After Checklist</Typography>
+                                    <Grid sm={12} item><Typography>After Checklist</Typography></Grid>
                                     {
                                         afterQuestions.map(qstn =>
-                                            <Grid key={qstn.number} xs={12} item>
+                                            <Grid key={qstn.number} sm={12} item alignContent={'center'}>
                                                 <FormControl>
                                                     <FormLabel>
                                                         <Typography variant='subtitle2' style={{ fontWeight: "bold", fontSize: 20 }} gutterBottom>{`${qstn.number}. ${qstn.label}`}</Typography>
@@ -203,48 +199,46 @@ export default function CheckList({ tiltle, beforeQuestions, afterQuestions}) {
                                     <Grid item sm={12}>
                                         <Typography variant='h6'>Faults</Typography>
                                     </Grid>
-                                    <FieldArray name='faults'>
-                                        {
-                                            ({ push, remove }) => (
-                                                <div>
-                                                    {   
-                                                        values.faults.map((fault, index) => (
-                                                            <Grid key={index} container spacing={3}>
-                                                                <Grid sm={5} item>
-                                                                    <FormControl style={{ marginBottom: "5px" }} size='small' fullWidth>
-                                                                        <Field as={TextField} required name={`faults.${index}.fault`} label="Fault" helperText={<ErrorMessage name={`fault.${index}.fault`}>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
-                                                                    </FormControl>
+                                    <Grid item sm={12}>
+                                        <FieldArray name='faults'>
+                                            {
+                                                ({ push, remove }) => (
+                                                    <div>
+                                                        {
+                                                            values.faults.map((fault, index) => (
+                                                                <Grid key={index} container rowGap={3} spacing={3}>
+                                                                    <Grid sm={5} style={{ marginBottom: "5px" }} item>
+                                                                        <FormikTextField name={`faults.${index}.fault`} label="Fault" />
+                                                                    </Grid>
+                                                                    <Grid sm={5} style={{ marginBottom: "5px" }} item>
+                                                                        <FormikTextField name={`faults.${index}.description`} label="Fault Description" />
+                                                                    </Grid>
+                                                                    <Grid sm={2} style={{ marginBottom: "5px" }} item>
+                                                                        <IconButton onClick={() => remove(index)} color="error"><RemoveCircleIcon /></IconButton>
+                                                                    </Grid>
                                                                 </Grid>
-                                                                <Grid key={index} sm={5} item>
-                                                                    <FormControl style={{ marginBottom: "5px" }} size='small' fullWidth>
-                                                                        <Field as={TextField} required name={`faults.${index}.description`} label="Fault Description" helperText={<ErrorMessage name={`faults${index}.description`}>{msg => <div style={{ color: "#B04445" }}>{msg}</div>}</ErrorMessage>}></Field>
-                                                                    </FormControl>
-                                                                </Grid>
-                                                                <Grid sm={2} item>
-                                                                    <IconButton onClick={() => remove(index)} color="error"><RemoveCircleIcon /></IconButton>
-                                                                </Grid>
-                                                            </Grid>
-                                                        ))
-                                                    }
-                                                    <Grid item>
-                                                        <Button
-                                                            variant='outlined'
-                                                            startIcon={<AddCircleIcon />}
-                                                            style={{ margin: "5px" }}
-                                                            onClick={ () => {
-                                                                push({
-                                                                    fault: "",
-                                                                    description: ""
-                                                                })
-                                                            }}
-                                                        >
-                                                            Add Fault
-                                                        </Button>
-                                                    </Grid>
-                                                </div>
-                                            )
-                                        }
-                                    </FieldArray>
+                                                            ))
+                                                        }
+                                                        <Grid item>
+                                                            <Button
+                                                                variant='outlined'
+                                                                startIcon={<AddCircleIcon />}
+                                                                style={{ margin: "5px" }}
+                                                                onClick={() => {
+                                                                    push({
+                                                                        fault: "",
+                                                                        description: ""
+                                                                    })
+                                                                }}
+                                                            >
+                                                                Add Fault
+                                                            </Button>
+                                                        </Grid>
+                                                    </div>
+                                                )
+                                            }
+                                        </FieldArray>
+                                    </Grid>
                                     <Grid xs={12} item>
                                         <Button type='submit' disabled={!dirty || !isValid || isSubmitting} variant='contained' color='primary' fullWidth>Clock In</Button>
                                     </Grid>

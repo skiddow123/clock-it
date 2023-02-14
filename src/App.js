@@ -11,24 +11,26 @@ import ClockIn from "./components/clockIn/ClockIn";
 import ClockOut from "./components/clockOut/ClockOut";
 import RegisterUser from "./components/registerUser/RegisterUser";
 import SignIn from './components/signIn/SignIn';
+import { DownloadPage } from './components/downloadPage/DownloadPage';
 // import { AuthProvider } from './context/AuthContext1';
 
 function App() {
   return (
-    <BrowserRouter>
-      <NavbarComponent />
-      {/* <div className='content'> */}
+      <BrowserRouter>
+        <NavbarComponent />
+        {/* <div className='content'> */}
         {/* <AuthProvider> */}
         <Routes>
-            <Route path='/' element={<HomePage />} />
-            {/* <Route path='/signIn' element={<SignIn />} /> */}
-            {/* <Route path='/registerUser' element={<RegisterUser />} /> */}
-            <Route path='/precheck' element={<ClockIn />} />
-            <Route path='/postcheck' element={<ClockOut />} />
-          </Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/download' element={<DownloadPage />} />
+          <Route path='/precheck' element={<ClockIn />} />
+          {/* <Route path='/signIn' element={<SignIn />} /> */}
+          {/* <Route path='/registerUser' element={<RegisterUser />} /> */}
+          {/* <Route path='/postcheck' element={<ClockOut />} /> */}
+        </Routes>
         {/* </AuthProvider> */}
-      {/* </div> */}
-    </BrowserRouter>
+        {/* </div> */}
+      </BrowserRouter>
   );
 }
 
