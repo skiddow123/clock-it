@@ -7,6 +7,18 @@ import FormikDatePicker from '../FormikDatePicker/FormikDatePicker'
 import FormikSelect from '../FormikSelect/FormikSelect' 
 import { Snackbar, Alert } from '@mui/material'
 import * as Yup from 'yup'
+import axios from 'axios'
+import fileDownload from 'js-file-download'
+
+const BACKEND_API_URL = process.env.REACT_APP_BACKEND_URL; // must watch
+
+const api = axios.create({
+    baseURL: BACKEND_API_URL,
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+    }
+})
 
 export const DownloadPage = () => {
     const [snackBarOpen, setSnackBarOpen] = useState(false)
@@ -30,36 +42,28 @@ export const DownloadPage = () => {
         setSnackBarOpen(false)
     }
     
-    const handleFormSubmission = async (values) => {
-        // let payload = values
-        // payload["id"] = "alfa"
-        console.log(values);
-        setSnackBarMessage("Form Submitted Successfully")
-        setSnackBarOpen(true)
-        // let res = await api.post("dataservices/v1/checklist/before", payload)
+    const handleFormSubmission = async (values, resetForm) => {
+        try {
+            const response = await api.get(`dataservices/v1/checklist/xlsx/${values.date}/${values.shift}`, {responseType: "blob"})
+            const fileName = `${values.date}-${values.shift}.xlsx`
+            fileDownload(response.data, fileName)
+            setSnackBarMessage("File Downloaded")
+            setSnackBarAlertSeverity("success")
+            setSnackBarOpen(true)
+            resetForm()
 
-        // fetch("http://localhost:8900/dataservices/v1/checklist/before", {
-        //     method: "POST",
-        //     // mode: "no-cors",
-        //     headers: {dataservices/v1/checklist
-        //         "Content-Type": "application/json",
-        //         "Accept": "application/json"
-        //     },
-        //     body: JSON.stringify({"id":"eee","firstName":"bdbdbdbdb","lastName":"dbdbdbd","damageOnMachine":"true","diuCondition":"false","dieselGeneration":"true","eRoomDoors":"false","gantryMotors":"true","antiCollisionSensors":"false","catWhiskers":"true","steeringRod":"false","camera":"true","gantryGearBox":"false","wheelGuards":"true","accessGateSensors":"false","earthingSystem":"true","stairwayOrMonkeyLadder":"false","walkwayLights":"true","tyreOrRimOrHub":"false","ashorePowerCable":"true","cabinGlassStatus":"false","notes":""})
-        // })
-        // .then(res => {
-        //     if(res.ok) {
-        //         setSnackBarMessage("Form Submitted Successfully")
-        //         setSnackBarAlertSeverity("success")
-        //         setSnackBarOpen(true)
-        //     }
-        //     setSnackBarMessage("Form Submission Failed, Try again later")
-        //     setSnackBarAlertSeverity("error")
-        //     setSnackBarOpen(true)
-        // })
-        // console.log(JSON.stringify(values));
-        // setSnackBarMessage("Form Submitted Successfully")
-        // setSnackBarOpen(true)
+        } catch (error) {
+            if (error.response.status === 400) {
+                setSnackBarMessage("Report for shift and date not found")
+                setSnackBarAlertSeverity("error")
+                setSnackBarOpen(true)
+            }
+            if (error.response.status === 500) {
+                setSnackBarMessage("Something Wrong Happend.. Try again later")
+                setSnackBarAlertSeverity("error")
+                setSnackBarOpen(true)
+            }
+        }
     }
 
     return (
@@ -77,21 +81,21 @@ export const DownloadPage = () => {
                 <Typography gutterBottom variant='h6'>Download Excel File</Typography>
                 <Formik
                     initialValues={formInitialValues}
-                onSubmit={(values) => handleFormSubmission(values)}
-                validationSchema={formValidationSchema}
+                    onSubmit={(values, {resetForm}) => handleFormSubmission(values, resetForm)}
+                    validationSchema={formValidationSchema}
                 >
                     {
-                        ({ values, dirty, isValid, isSubmitting, handleReset }) =>
+                        ({dirty, isValid, isSubmitting}) =>
                             <Form>
                                 <Grid container spacing={3}>
                                     <Grid item sm={6}>
-                                        <FormikSelect name="shift" label="Shift" errorString="required" menuItems={shiftItems} />
+                                        <FormikSelect name="shift" label="Shift" options={shiftItems} fullWidth />
                                     </Grid>
                                     <Grid item sm={6}>
                                         <FormikDatePicker name='date' label='Shift Date' />
                                     </Grid>
                                     <Grid xs={12} item>
-                                        <Button type='submit' disabled={!dirty || !isValid || isSubmitting} variant='contained' color='primary' fullWidth>Download</Button>
+                                        <Button type='submit' disabled={!dirty || !isValid || isSubmitting} variant='contained' color='primary' fullWidth>Download File</Button>
                                     </Grid>
                                 </Grid>
                             </Form>
