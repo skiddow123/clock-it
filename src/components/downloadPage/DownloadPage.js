@@ -57,11 +57,13 @@ export const DownloadPage = () => {
                 setSnackBarMessage("Report for shift and date not found")
                 setSnackBarAlertSeverity("error")
                 setSnackBarOpen(true)
+                resetForm()
             }
             if (error.response.status === 500) {
                 setSnackBarMessage("Something Wrong Happend.. Try again later")
                 setSnackBarAlertSeverity("error")
                 setSnackBarOpen(true)
+                resetForm()
             }
         }
     }
