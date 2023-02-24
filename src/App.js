@@ -23,7 +23,8 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/download' element={<DownloadPage />} />
-          <Route path='/precheck' element={<ClockIn />} />
+          <Route path='/checklist' element={<ClockIn />} />
+          {/* <Route path='/precheck' element={<ClockIn />} /> */}
           {/* <Route path='/signIn' element={<SignIn />} /> */}
           {/* <Route path='/registerUser' element={<RegisterUser />} /> */}
           {/* <Route path='/postcheck' element={<ClockOut />} /> */}

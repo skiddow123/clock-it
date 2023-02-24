@@ -20,8 +20,10 @@ export default function NavbarComponent() {
           </IconButton>
           <Typography variant='h6' component='div' sx={{flexGrow: 1}}>MPS-CHECKLIST</Typography>
           <Stack direction='row' spacing={2}>
-            <Button color='inherit' onClick={() => navigateToRouteHandler("precheck")}>CHECK IN</Button>
-            <Button color='inherit' onClick={() => navigateToRouteHandler("postcheck")}>CHECK OUT</Button>
+          <Button color='inherit' onClick={() => navigateToRouteHandler("checklist")}>Checklist</Button>
+          <Button color='inherit' onClick={() => navigateToRouteHandler("download")}>Download Report</Button>
+            {/* <Button color='inherit' onClick={() => navigateToRouteHandler("precheck")}>CHECK IN</Button> */}
+            {/* <Button color='inherit' onClick={() => navigateToRouteHandler("postcheck")}>CHECK OUT</Button> */}
           </Stack>
         </Toolbar>
       </AppBar>

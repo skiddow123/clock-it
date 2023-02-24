@@ -12,7 +12,7 @@ export const beforeStartupParts = [
     {
         "number": 3,
         "label": "DIESEL GENERATOR",
-        "question": "dieselGeneration"
+        "question": "dieselGenerator"
     },
     {
         "number": 4,
@@ -99,13 +99,13 @@ export const afterStartupParts = [
     },
     {
         "number": 2,
-        "label": "IS AIR CONDITION WORKING",
-        "question": "isAirConditionWorking"
+        "label": "AIR CONDITION WORKING",
+        "question": "airConditionWorking"
     },
     {
         "number": 3,
         "label": "GANTRY SIREN WORKING",
-        "question": "gateSirenWorking"
+        "question": "gantrySirenWorking"
     },
     {
         "number": 4,
@@ -185,12 +185,12 @@ export const afterStartupParts = [
     {
         "number": 19,
         "label": "FIRE EXTINGUISHER",
-        "question": "fireExtinquisher",
+        "question": "fireExtinguisher",
     },
     {
         "number":20,
-        "label": "SPREADER ELECTRIC CABLE",
-        "question": "spreaderElectricCable"
+        "label": "SPREADER ELECTRICAL CABLE",
+        "question": "spreaderElectricalCable"
     },
     {
         "number": 21,

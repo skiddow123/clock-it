@@ -17,11 +17,12 @@ export default function HomePageComponent() {
                 Some quick example text to build on the card title and make up the
                 bulk of the card's content.
                 </Card.Text>
-                <Link to='/precheck'><Button variant="primary">Precheck</Button></Link>
+                <Link to='/checklist'><Button variant="primary">Checklist</Button></Link>
+                {/* <Link to='/precheck'><Button variant="primary">Precheck</Button></Link> */}
                 {/* <Button variant="primary">Precheck</Button> */}
             </Card.Body>
         </Card>
-        <Card style={{ width: '19rem' }}>
+        {/* <Card style={{ width: '19rem' }}>
             <Card.Img variant="top" src={afterStartupImg} />
             <Card.Body>
                 <Card.Title>Post Startup Check</Card.Title>
@@ -30,9 +31,9 @@ export default function HomePageComponent() {
                 bulk of the card's content.
                 </Card.Text>
                 <Link to='/postcheck'><Button variant="primary">Postcheck</Button></Link>
-                {/* <Button variant="primary">Postcheck</Button> */}
+                <Button variant="primary">Postcheck</Button>
             </Card.Body>
-        </Card>
+        </Card> */}
     </div>
   )
 }
