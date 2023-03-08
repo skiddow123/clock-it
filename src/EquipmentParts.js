@@ -95,7 +95,7 @@ export const afterStartupParts = [
     {
         "number": 1,
         "label": "TROLLEY GATE SENSORS",
-        "question": "trolleyGateSensors"
+        "question": "trolleyGateSensor"
     },
     {
         "number": 2,
@@ -104,8 +104,8 @@ export const afterStartupParts = [
     },
     {
         "number": 3,
-        "label": "GANTRY SIREN WORKING",
-        "question": "gantrySirenWorking"
+        "label": "GANTRY SIREN WARNING",
+        "question": "gantrySirenWarning"
     },
     {
         "number": 4,
@@ -165,7 +165,7 @@ export const afterStartupParts = [
     {
         "number": 15,
         "label": "LCPS/ BOXSHAPE MOVEMENT",
-        "question": "lcpsOrBoxshapeMovement"
+        "question": "lcpsOrBoxShapeMovement"
     },
     {
         "number": 16,

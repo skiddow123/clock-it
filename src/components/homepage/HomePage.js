@@ -14,8 +14,7 @@ export default function HomePageComponent() {
             <Card.Body>
                 <Card.Title>Pre Startup Check</Card.Title>
                 <Card.Text>
-                Some quick example text to build on the card title and make up the
-                bulk of the card's content.
+                    Perform pre and post startup check on the parts of the equipment.
                 </Card.Text>
                 <Link to='/checklist'><Button variant="primary">Checklist</Button></Link>
                 {/* <Link to='/precheck'><Button variant="primary">Precheck</Button></Link> */}
