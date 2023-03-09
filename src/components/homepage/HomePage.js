@@ -10,7 +10,7 @@ export default function HomePageComponent() {
   return (
     <div className='cards-section'>
         <Card style={{ width: '19rem' }}>
-            <Card.Img variant="top" src={beforeStartupImg} />
+            <Card.Img variant="top" src={beforeStartupImg} style={{padding: "20px"}} />
             <Card.Body>
                 <Card.Title>Pre Startup Check</Card.Title>
                 <Card.Text>
